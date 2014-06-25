@@ -20,6 +20,7 @@ return array(
 
 	'defaultController'=>'site',
 	'modules'=>array(
+		'admin' => array(),
 		// uncomment the following to enable the Gii tool
 		'gii'=>array(
 			'class'=>'system.gii.GiiModule',
