@@ -1,29 +1,35 @@
 <?php
 
 /**
- * This is the model class for table "users".
+ * This is the model class for table "points".
  *
- * The followings are the available columns in table 'users':
+ * The followings are the available columns in table 'points':
  * @property integer $id
  * @property string $name
- * @property string $surname
- * @property string $email
- * @property integer $city
- * @property integer $group_id
+ * @property string $description
+ * @property integer $category
+ * @property string $image
+ * @property string $date_start
+ * @property string $date_end
+ * @property integer $no_end
+ * @property integer $company_id
+ * @property integer $user_id
+ * @property string $user_email
+ * @property string $address
+ * @property string $lat
+ * @property string $lng
  * @property integer $status
+ * @property integer $vip
  * @property string $date
- * @property integer $country
- * @property integer $password
- * @property integer $salt
  */
-class Users extends CActiveRecord
+class Points extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'users';
+		return 'points';
 	}
 
 	/**
@@ -34,13 +40,14 @@ class Users extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('name, surname, email, city, group_id, country, password, salt', 'required'),
-			array('city, group_id, status, country, password, salt', 'numerical', 'integerOnly'=>true),
-			array('name, surname, email', 'length', 'max'=>60),
-			array('date', 'length', 'max'=>16),
+			array('name, description, category, image, date_start, date_end, no_end, company_id, user_id, user_email, address, lat, lng, status, vip, date', 'required'),
+			array('category, no_end, company_id, user_id, status, vip', 'numerical', 'integerOnly'=>true),
+			array('name, image, address', 'length', 'max'=>255),
+			array('date_start, date_end, lat, lng, date', 'length', 'max'=>15),
+			array('user_email', 'length', 'max'=>50),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, name, surname, email, city, group_id, status, date, country, password, salt', 'safe', 'on'=>'search'),
+			array('id, name, description, category, image, date_start, date_end, no_end, company_id, user_id, user_email, address, lat, lng, status, vip, date', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -52,7 +59,6 @@ class Users extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'_group' => array( self::BELONGS_TO, 'Groups', 'group_id' ),
 		);
 	}
 
@@ -64,15 +70,21 @@ class Users extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'name' => 'Name',
-			'surname' => 'Surname',
-			'email' => 'Email',
-			'city' => 'City',
-			'group_id' => 'Group',
+			'description' => 'Description',
+			'category' => 'Category',
+			'image' => 'Image',
+			'date_start' => 'Date Start',
+			'date_end' => 'Date End',
+			'no_end' => 'No End',
+			'company_id' => 'Company',
+			'user_id' => 'User',
+			'user_email' => 'User Email',
+			'address' => 'Address',
+			'lat' => 'Lat',
+			'lng' => 'Lng',
 			'status' => 'Status',
+			'vip' => 'Vip',
 			'date' => 'Date',
-			'country' => 'Country',
-			'password' => 'Password',
-			'salt' => 'Salt',
 		);
 	}
 
@@ -96,15 +108,21 @@ class Users extends CActiveRecord
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('name',$this->name,true);
-		$criteria->compare('surname',$this->surname,true);
-		$criteria->compare('email',$this->email,true);
-		$criteria->compare('city',$this->city);
-		$criteria->compare('group_id',$this->group_id);
+		$criteria->compare('description',$this->description,true);
+		$criteria->compare('category',$this->category);
+		$criteria->compare('image',$this->image,true);
+		$criteria->compare('date_start',$this->date_start,true);
+		$criteria->compare('date_end',$this->date_end,true);
+		$criteria->compare('no_end',$this->no_end);
+		$criteria->compare('company_id',$this->company_id);
+		$criteria->compare('user_id',$this->user_id);
+		$criteria->compare('user_email',$this->user_email,true);
+		$criteria->compare('address',$this->address,true);
+		$criteria->compare('lat',$this->lat,true);
+		$criteria->compare('lng',$this->lng,true);
 		$criteria->compare('status',$this->status);
+		$criteria->compare('vip',$this->vip);
 		$criteria->compare('date',$this->date,true);
-		$criteria->compare('country',$this->country);
-		$criteria->compare('password',$this->password);
-		$criteria->compare('salt',$this->salt);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -115,7 +133,7 @@ class Users extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return Users the static model class
+	 * @return Actions the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{

@@ -1,29 +1,27 @@
 <?php
 
 /**
- * This is the model class for table "users".
+ * This is the model class for table "messages".
  *
- * The followings are the available columns in table 'users':
+ * The followings are the available columns in table 'messages':
  * @property integer $id
  * @property string $name
- * @property string $surname
  * @property string $email
- * @property integer $city
- * @property integer $group_id
- * @property integer $status
+ * @property string $phone
+ * @property string $message
+ * @property string $subject
  * @property string $date
- * @property integer $country
- * @property integer $password
- * @property integer $salt
+ * @property integer $status
+ * @property integer $user_id
  */
-class Users extends CActiveRecord
+class Messages extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'users';
+		return 'messages';
 	}
 
 	/**
@@ -34,13 +32,14 @@ class Users extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('name, surname, email, city, group_id, country, password, salt', 'required'),
-			array('city, group_id, status, country, password, salt', 'numerical', 'integerOnly'=>true),
-			array('name, surname, email', 'length', 'max'=>60),
-			array('date', 'length', 'max'=>16),
+			array('name, email, phone, message, subject, date, status, user_id', 'required'),
+			array('status, user_id', 'numerical', 'integerOnly'=>true),
+			array('name, email', 'length', 'max'=>50),
+			array('phone, date', 'length', 'max'=>15),
+			array('subject', 'length', 'max'=>255),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, name, surname, email, city, group_id, status, date, country, password, salt', 'safe', 'on'=>'search'),
+			array('id, name, email, phone, message, subject, date, status, user_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -52,7 +51,6 @@ class Users extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'_group' => array( self::BELONGS_TO, 'Groups', 'group_id' ),
 		);
 	}
 
@@ -64,15 +62,13 @@ class Users extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'name' => 'Name',
-			'surname' => 'Surname',
 			'email' => 'Email',
-			'city' => 'City',
-			'group_id' => 'Group',
-			'status' => 'Status',
+			'phone' => 'Phone',
+			'message' => 'Message',
+			'subject' => 'Subject',
 			'date' => 'Date',
-			'country' => 'Country',
-			'password' => 'Password',
-			'salt' => 'Salt',
+			'status' => 'Status',
+			'user_id' => 'User',
 		);
 	}
 
@@ -96,15 +92,13 @@ class Users extends CActiveRecord
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('name',$this->name,true);
-		$criteria->compare('surname',$this->surname,true);
 		$criteria->compare('email',$this->email,true);
-		$criteria->compare('city',$this->city);
-		$criteria->compare('group_id',$this->group_id);
-		$criteria->compare('status',$this->status);
+		$criteria->compare('phone',$this->phone,true);
+		$criteria->compare('message',$this->message,true);
+		$criteria->compare('subject',$this->subject,true);
 		$criteria->compare('date',$this->date,true);
-		$criteria->compare('country',$this->country);
-		$criteria->compare('password',$this->password);
-		$criteria->compare('salt',$this->salt);
+		$criteria->compare('status',$this->status);
+		$criteria->compare('user_id',$this->user_id);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -115,7 +109,7 @@ class Users extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return Users the static model class
+	 * @return Messages the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{

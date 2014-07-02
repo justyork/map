@@ -1,29 +1,20 @@
 <?php
 
 /**
- * This is the model class for table "users".
+ * This is the model class for table "groups".
  *
- * The followings are the available columns in table 'users':
+ * The followings are the available columns in table 'groups':
  * @property integer $id
  * @property string $name
- * @property string $surname
- * @property string $email
- * @property integer $city
- * @property integer $group_id
- * @property integer $status
- * @property string $date
- * @property integer $country
- * @property integer $password
- * @property integer $salt
  */
-class Users extends CActiveRecord
+class Groups extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'users';
+		return 'groups';
 	}
 
 	/**
@@ -34,13 +25,11 @@ class Users extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('name, surname, email, city, group_id, country, password, salt', 'required'),
-			array('city, group_id, status, country, password, salt', 'numerical', 'integerOnly'=>true),
-			array('name, surname, email', 'length', 'max'=>60),
-			array('date', 'length', 'max'=>16),
+			array('name', 'required'),
+			array('name', 'length', 'max'=>50),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, name, surname, email, city, group_id, status, date, country, password, salt', 'safe', 'on'=>'search'),
+			array('id, name', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -52,7 +41,7 @@ class Users extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'_group' => array( self::BELONGS_TO, 'Groups', 'group_id' ),
+			'_actions' => array(self::MANY_MANY, 'Actions', 'action_group(group_id, action_id)'),
 		);
 	}
 
@@ -64,15 +53,6 @@ class Users extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'name' => 'Name',
-			'surname' => 'Surname',
-			'email' => 'Email',
-			'city' => 'City',
-			'group_id' => 'Group',
-			'status' => 'Status',
-			'date' => 'Date',
-			'country' => 'Country',
-			'password' => 'Password',
-			'salt' => 'Salt',
 		);
 	}
 
@@ -96,15 +76,6 @@ class Users extends CActiveRecord
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('name',$this->name,true);
-		$criteria->compare('surname',$this->surname,true);
-		$criteria->compare('email',$this->email,true);
-		$criteria->compare('city',$this->city);
-		$criteria->compare('group_id',$this->group_id);
-		$criteria->compare('status',$this->status);
-		$criteria->compare('date',$this->date,true);
-		$criteria->compare('country',$this->country);
-		$criteria->compare('password',$this->password);
-		$criteria->compare('salt',$this->salt);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -115,10 +86,19 @@ class Users extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return Users the static model class
+	 * @return Groups the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
+	}
+
+	public function getActions(){
+		$actions = array();
+		foreach($this->_actions as $act){
+			$actions[$act->id] = $act->name;
+		}
+		return $actions;
+
 	}
 }

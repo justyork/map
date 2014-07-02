@@ -1,29 +1,28 @@
 <?php
 
 /**
- * This is the model class for table "users".
+ * This is the model class for table "company".
  *
- * The followings are the available columns in table 'users':
+ * The followings are the available columns in table 'company':
  * @property integer $id
- * @property string $name
- * @property string $surname
- * @property string $email
- * @property integer $city
- * @property integer $group_id
+ * @property integer $name
+ * @property string $logo
+ * @property string $link
+ * @property string $description
+ * @property string $adresses
  * @property integer $status
  * @property string $date
- * @property integer $country
- * @property integer $password
- * @property integer $salt
+ * @property integer $users_id
+ * @property integer $moder
  */
-class Users extends CActiveRecord
+class Company extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'users';
+		return 'company';
 	}
 
 	/**
@@ -34,13 +33,13 @@ class Users extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('name, surname, email, city, group_id, country, password, salt', 'required'),
-			array('city, group_id, status, country, password, salt', 'numerical', 'integerOnly'=>true),
-			array('name, surname, email', 'length', 'max'=>60),
-			array('date', 'length', 'max'=>16),
+			array('name, logo, link, description, adresses, status, date, users_id, moder', 'required'),
+			array('name, status, users_id, moder', 'numerical', 'integerOnly'=>true),
+			array('logo, link', 'length', 'max'=>255),
+			array('date', 'length', 'max'=>15),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, name, surname, email, city, group_id, status, date, country, password, salt', 'safe', 'on'=>'search'),
+			array('id, name, logo, link, description, adresses, status, date, users_id, moder', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -52,7 +51,6 @@ class Users extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'_group' => array( self::BELONGS_TO, 'Groups', 'group_id' ),
 		);
 	}
 
@@ -64,15 +62,14 @@ class Users extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'name' => 'Name',
-			'surname' => 'Surname',
-			'email' => 'Email',
-			'city' => 'City',
-			'group_id' => 'Group',
+			'logo' => 'Logo',
+			'link' => 'Link',
+			'description' => 'Description',
+			'adresses' => 'Adresses',
 			'status' => 'Status',
 			'date' => 'Date',
-			'country' => 'Country',
-			'password' => 'Password',
-			'salt' => 'Salt',
+			'users_id' => 'Users',
+			'moder' => 'Moder',
 		);
 	}
 
@@ -95,16 +92,15 @@ class Users extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('name',$this->name,true);
-		$criteria->compare('surname',$this->surname,true);
-		$criteria->compare('email',$this->email,true);
-		$criteria->compare('city',$this->city);
-		$criteria->compare('group_id',$this->group_id);
+		$criteria->compare('name',$this->name);
+		$criteria->compare('logo',$this->logo,true);
+		$criteria->compare('link',$this->link,true);
+		$criteria->compare('description',$this->description,true);
+		$criteria->compare('adresses',$this->adresses,true);
 		$criteria->compare('status',$this->status);
 		$criteria->compare('date',$this->date,true);
-		$criteria->compare('country',$this->country);
-		$criteria->compare('password',$this->password);
-		$criteria->compare('salt',$this->salt);
+		$criteria->compare('users_id',$this->users_id);
+		$criteria->compare('moder',$this->moder);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -115,7 +111,7 @@ class Users extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return Users the static model class
+	 * @return Company the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{

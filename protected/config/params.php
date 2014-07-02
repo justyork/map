@@ -16,4 +16,5 @@ return array(
 	'commentNeedApproval'=>true,
 	// the copyright information displayed in the footer section
 	'copyrightInfo'=>'Copyright &copy; 2009 by My Company.',
+	'secretKey' => ';93Ox2QqY_YztI4FkR{Prf{M9FZy;j99U~7GJnOn7s4bxC<_6gk%ws5oNS"?chu*',
 );

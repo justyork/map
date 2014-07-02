@@ -8,7 +8,7 @@
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
 	'name'=>'Map',
-
+	'language' => 'ru',
 	// preloading 'log' component
 	'preload'=>array('log'),
 
@@ -18,8 +18,9 @@ return array(
 		'application.components.*',
 	),
 
-	'defaultController'=>'site',
+	'defaultController'=>'default',
 	'modules'=>array(
+		'cp',
 		// uncomment the following to enable the Gii tool
 		'gii'=>array(
 			'class'=>'system.gii.GiiModule',
@@ -33,6 +34,8 @@ return array(
 	'components'=>array(
 		'user'=>array(
 			// enable cookie-based authentication
+
+			'loginUrl'=>array('cp/login'),
 			'allowAutoLogin'=>true,
 		),
 		// uncomment the following to use a MySQL database
@@ -41,14 +44,14 @@ return array(
 
 		'errorHandler'=>array(
 			// use 'site/error' action to display errors
-			'errorAction'=>'site/error',
+			'errorAction'=>'cp/default/error',
 		),
 		'urlManager'=>array(
 			'urlFormat'=>'path',
 			'showScriptName' => false,
 			'rules'=>array(
-				'' => 'site/index',
-				'<action:(login|logout)>' => 'site/<action>',
+				'' => 'default/index',
+				'cp/<action:(login|logout)>' => 'cp/default/<action>',
 				'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
 			),
 		),
